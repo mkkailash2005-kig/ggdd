@@ -1,0 +1,178 @@
+```html
+<!DOCTYPE html>
+<html>
+<head>
+    <title>AI-SeisDetect</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+
+    <style>
+        body {
+            background: #0b1118;
+            color: white;
+            font-family: Arial;
+            padding: 20px;
+        }
+
+        .box {
+            background: #121b26;
+            padding: 20px;
+            margin: 20px auto;
+            max-width: 450px;
+            border-radius: 10px;
+        }
+
+        h1 { color: #4aa3ff; }
+
+        input, select, button {
+            width: 100%;
+            padding: 10px;
+            margin: 8px 0;
+            box-sizing: border-box;
+        }
+
+        button {
+            background: #4aa3ff;
+            border: none;
+            cursor: pointer;
+        }
+
+        #intro, #dashboard { display: none; }
+    </style>
+</head>
+
+<body>
+
+<!-- 1. LOGIN PAGE -->
+<div class="box" id="login">
+    <h1>AI-SeisDetect</h1>
+    <h3>Login Page</h3>
+
+    <label>Enter your name:</label>
+    <input id="username" placeholder="Your name">
+
+    <label>Select your country:</label>
+    <select id="country">
+        <option value="">Choose country</option>
+        <option>India</option>
+        <option>Japan</option>
+        <option>Nepal</option>
+        <option>USA</option>
+        <option>China</option>
+        <option>Indonesia</option>
+        <option>Turkey</option>
+        <option>New Zealand</option>
+    </select>
+
+    <button onclick="login()">Login</button>
+</div>
+
+<!-- 2. INTRODUCTION -->
+<div class="box" id="intro">
+    <h1>Introduction</h1>
+
+    <p>Welcome to AI-SeisDetect!</p>
+
+    <p>
+        AI-SeisDetect is an earthquake monitoring
+        demonstration application. It displays earthquake
+        magnitudes, locations and estimated hazard levels.
+    </p>
+
+    <p id="userInfo"></p>
+
+    <button onclick="openDashboard()">Go to Dashboard</button>
+</div>
+
+<!-- 3. DASHBOARD -->
+<div id="dashboard">
+    <div class="box">
+        <h1>Earthquake Dashboard</h1>
+        <p id="welcome"></p>
+        <p>Country: <b id="selectedCountry"></b></p>
+    </div>
+
+    <div class="box">
+        <h3>Earthquake Statistics</h3>
+
+        <p>Magnitude: <b id="mag">--</b></p>
+        <p>Location: <b id="location">--</b></p>
+        <p>Hazard Level: <b id="hazard">--</b></p>
+
+        <button onclick="detect()">Check Earthquake</button>
+    </div>
+
+    <div class="box">
+        <h3>Earthquake Feed</h3>
+        <ul id="feed"></ul>
+    </div>
+
+    <div class="box">
+        <button onclick="logout()">Logout</button>
+    </div>
+</div>
+
+<script>
+let name = "";
+let country = "";
+
+function login() {
+    name = document.getElementById("username").value.trim();
+    country = document.getElementById("country").value;
+
+    if (name === "" || country === "") {
+        alert("Please enter your name and select your country.");
+        return;
+    }
+
+    document.getElementById("login").style.display = "none";
+    document.getElementById("intro").style.display = "block";
+
+    document.getElementById("userInfo").textContent =
+        "Hello " + name + "! Selected country: " + country;
+}
+
+function openDashboard() {
+    document.getElementById("intro").style.display = "none";
+    document.getElementById("dashboard").style.display = "block";
+
+    document.getElementById("welcome").textContent =
+        "Welcome, " + name + "!";
+
+    document.getElementById("selectedCountry").textContent = country;
+}
+
+function detect() {
+    let magnitude = (Math.random() * 5 + 1).toFixed(1);
+
+    let places = ["India", "Japan", "Nepal", "USA", "Indonesia"];
+    let location = places[Math.floor(Math.random() * places.length)];
+
+    let hazard = magnitude >= 5 ? "HIGH" :
+                 magnitude >= 3 ? "MEDIUM" : "LOW";
+
+    document.getElementById("mag").textContent = magnitude;
+    document.getElementById("location").textContent = location;
+    document.getElementById("hazard").textContent = hazard;
+
+    let item = document.createElement("li");
+    item.textContent = location + " - Magnitude " +
+                       magnitude + " - " + hazard + " hazard";
+
+    document.getElementById("feed").prepend(item);
+}
+
+function logout() {
+    document.getElementById("dashboard").style.display = "none";
+    document.getElementById("intro").style.display = "none";
+    document.getElementById("login").style.display = "block";
+
+    document.getElementById("username").value = "";
+    document.getElementById("country").value = "";
+    document.getElementById("feed").innerHTML = "";
+}
+
+</script>
+
+</body>
+</html>
+```
